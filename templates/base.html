@@ -1,0 +1,57 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Transcript</title>
+    <style>
+        .host { color: blue; font-weight: bold; }
+        .guest { color: green; font-weight: bold; }
+        .timestamp { color: gray; font-style: italic; }
+        p { margin-top: 1em; }
+        .hidden { display: none; }
+        .slide {
+            transition: max-height 1s ease-out;
+            overflow: hidden;
+            max-height: 0;
+        }
+        .slide.show {
+            max-height: none; /* Show all content */
+        }
+        .fade {
+            position: relative;
+        }
+        .fade::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px; /* Adjust as needed */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+        }
+    </style>
+    <script>
+        function toggleVisibility() {
+            var transcript = document.getElementById("transcript");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("moreBtn");
+
+            if (moreText.classList.contains("show")) {
+            moreText.classList.remove("show");
+            btnText.innerHTML = "Mehr lesen";
+            transcript.classList.add("fade");
+            } else {
+            moreText.classList.add("show");
+            btnText.innerHTML = "Weniger lesen";
+            transcript.classList.remove("fade");
+            }
+        }
+    </script>
+</head>
+<body>
+   {{ . }}
+</body>
+</html>
+{{ end }}

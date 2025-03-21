@@ -1,0 +1,14 @@
+{{ define "speaker_entry" }}
+
+{{range .Entries}}
+<div>
+    <span class="{{if eq .Speaker $.Host}}host{{else if eq .Speaker $.Guest}}guest{{end}}">
+        {{.Speaker}}
+    </span>
+    <span class="timestamp">({{.Timestamp}})</span>
+</div>
+{{range .Paragraphs}}
+<p>{{.}}</p>
+{{end}}
+{{end}}
+{{ end }}

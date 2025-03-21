@@ -1,0 +1,17 @@
+{{ define "transcript" }}
+<div id="transcript" class="fade">
+    {{ range $idx, $elm := . }} 
+    {{ if lt $idx 10 }}
+        {{ $elm | safeHTML }}
+    {{ else if eq $idx 10 }}
+        </div>
+        <div id="more" class="slide">
+        {{ $elm | safeHTML }}
+    {{ else }}
+        {{ $elm | safeHTML }}
+    {{ end }}
+    {{ end }} 
+</div> 
+<button onclick="toggleVisibility()" id="moreBtn">Mehr lesen</button>
+{{ end }} 
+

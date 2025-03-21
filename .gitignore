@@ -1,0 +1,50 @@
+.github/copilot-instructions.md
+/*.txt
+/*.html
+!templates/**/*.html
+
+# Binäre Ausgabedateien
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.o
+*.out
+
+# Build-Ausgabe
+/build/
+
+# Verzeichnisse und Dateien für Abhängigkeiten
+vendor/
+
+# Module und Abhängigkeiten (falls mod-cache verwendet wird)
+pkg/
+
+# Go-Modul-Dateien
+go.sum
+
+# Test-Ausgaben
+*.test
+
+# IDE/Editor-spezifische Dateien
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Logs und Debugging/Tmp
+*.log
+*.tmp
+*.env
+.DS_Store
+
+# Projekt-/CI-bezogene Temporärdateien
+coverage.out
+.notes
+
+# Container (Docker) und andere CI-Artefakte
+.dockerignore
+docker-compose.override.yml
