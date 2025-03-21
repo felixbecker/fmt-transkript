@@ -1,4 +1,4 @@
-module transkript
+module github.com/felixbecker/fmt-transkript
 
 go 1.24.0
 

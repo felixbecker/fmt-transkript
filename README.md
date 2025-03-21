@@ -1,4 +1,4 @@
-# Podcast Transcript Generator
+# Podcast Transcript Formater
 
 A Go program that converts podcast transcripts from text files into formatted HTML output with speaker highlighting and timestamps.
 
