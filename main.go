@@ -65,7 +65,7 @@ func main() {
 		fmt.Println("Fehler beim Erstellen des HTML:", err)
 	}
 
-	fmt.Println("HTML-Transkript erfolgreich erstellt in: transcript.html")
+	fmt.Printf("HTML-Transkript erfolgreich erstellt in: %s\n", p.outputFilename)
 	fmt.Printf("Host: %s, Guest: %s\n", p.host, p.guest)
 }
 
@@ -157,8 +157,7 @@ func removeEmptyLines(builder *strings.Builder) strings.Builder {
 	return filteredBuilder
 }
 
-func (p *parser) generateHTML(entries []Entry) error {
-
+func (p *parser) makeTemplate() (*template.Template, error) {
 	tmpl := template.New("").Funcs(template.FuncMap{
 		"add": func(a int, b int) int {
 			return a + b
@@ -167,61 +166,98 @@ func (p *parser) generateHTML(entries []Entry) error {
 			return template.HTML(s)
 		},
 	})
-	tmpl, err := tmpl.ParseFS(content, "base.html", "template.html", "partials/speaker_entry.html")
+	return tmpl.ParseFS(content, "templates/base.html", "templates/template.html", "templates/speaker_entry.html")
+}
+
+func (p *parser) getSpeakerClass(speaker string) string {
+	switch speaker {
+	case p.host:
+		return "host"
+	case p.guest:
+		return "guest"
+	default:
+		return ""
+	}
+}
+
+func (p *parser) buildSpeakerHeader(entry Entry) string {
+	var entryBuilder strings.Builder
+	entryBuilder.WriteString(`<div>`)
+	entryBuilder.WriteString(fmt.Sprintf(`<span class="%s">%s</span>`,
+		p.getSpeakerClass(entry.Speaker), entry.Speaker))
+	entryBuilder.WriteString(fmt.Sprintf(`<span class="timestamp">%s</span>`, entry.Timestamp))
+	entryBuilder.WriteString(`</div>`)
+	return entryBuilder.String()
+}
+
+func (p *parser) buildParagraphs(entry Entry) []string {
+	paragraphs := make([]string, len(entry.Paragraphs))
+	for i, paragraph := range entry.Paragraphs {
+		paragraphs[i] = fmt.Sprintf("<p>%s</p>\n", paragraph)
+	}
+	return paragraphs
+}
+
+func (p *parser) buildSpeakerEntries(entries []Entry) []string {
+	var speakerEntryBuilder []string
+	for _, entry := range entries {
+		speakerEntryBuilder = append(speakerEntryBuilder, p.buildSpeakerHeader(entry))
+		speakerEntryBuilder = append(speakerEntryBuilder, p.buildParagraphs(entry)...)
+	}
+	return speakerEntryBuilder
+}
+
+func (p *parser) renderTranscript(tmpl *template.Template, speakerEntries []string) (string, error) {
+	var transcriptBuilder strings.Builder
+	err := tmpl.ExecuteTemplate(&transcriptBuilder, "transcript", speakerEntries)
+	if err != nil {
+		return "", err
+	}
+	cleanTranscriptBuilder := removeEmptyLines(&transcriptBuilder)
+	return cleanTranscriptBuilder.String(), nil
+}
+
+func (p *parser) copyToClipboard(content string) error {
+	if err := clipboard.Init(); err != nil {
+		return err
+	}
+	done := clipboard.Write(clipboard.FmtText, []byte(content))
+	go func() {
+		<-done
+	}()
+	return nil
+}
+
+func (p *parser) writeToFile(tmpl *template.Template, content string) error {
+	outputFile, err := os.Create(p.outputFilename)
+	if err != nil {
+		return err
+	}
+	defer outputFile.Close()
+
+	return tmpl.ExecuteTemplate(outputFile, "base", template.HTML(content))
+}
+
+func (p *parser) generateHTML(entries []Entry) error {
+
+	tmpl, err := p.makeTemplate()
 	if err != nil {
 		return fmt.Errorf("fehler beim Parsen der Templates: %w", err)
 	}
 
-	var speakerEntryBuilder []string
-	for _, entry := range entries {
-		var entryBuilder strings.Builder
+	speakerEntries := p.buildSpeakerEntries(entries)
 
-		entryBuilder.WriteString(`<div>`)
-		entryBuilder.WriteString(fmt.Sprintf(`<span class="%s">%s</span>`,
-			func() string {
-				if entry.Speaker == p.host {
-					return "host"
-				} else if entry.Speaker == p.guest {
-					return "guest"
-				}
-				return ""
-			}(), entry.Speaker))
-		entryBuilder.WriteString(fmt.Sprintf(`<span class="timestamp">%s</span>`, entry.Timestamp))
-		entryBuilder.WriteString(`</div>`)
-		speakerEntryBuilder = append(speakerEntryBuilder, entryBuilder.String())
-		for _, paragraph := range entry.Paragraphs {
-			speakerEntryBuilder = append(speakerEntryBuilder, fmt.Sprintf("<p>%s</p>\n", paragraph))
-		}
+	transcriptHTML, err := p.renderTranscript(tmpl, speakerEntries)
+	if err != nil {
+		return fmt.Errorf("fehler beim Rendern des Transkripts: %w", err)
 	}
 
-	var transcriptBuilder strings.Builder
-	err = tmpl.ExecuteTemplate(&transcriptBuilder, "transcript", speakerEntryBuilder)
-
-	if err != nil {
-		panic(fmt.Errorf("fehler beim Rendern von template.html: %w", err))
+	if err := p.copyToClipboard(transcriptHTML); err != nil {
+		return fmt.Errorf("fehler beim Kopieren in die Zwischenablage: %w", err)
 	}
 
-	cleanTranscriptBuilder := removeEmptyLines(&transcriptBuilder)
-
-	err = clipboard.Init()
-	if err != nil {
-		panic(err)
-	}
-	done := clipboard.Write(clipboard.FmtText, []byte(cleanTranscriptBuilder.String()))
-	go func() {
-		<-done
-	}()
-
-	outputFile, err := os.Create(p.outputFilename)
-	if err != nil {
-		panic(fmt.Errorf("fehler beim Erstellen der Ausgabedatei: %w", err))
-
-	}
-	defer outputFile.Close()
-
-	err = tmpl.ExecuteTemplate(outputFile, "base", template.HTML(cleanTranscriptBuilder.String()))
-	if err != nil {
-		panic(fmt.Errorf("fehler beim Rendern von base.html: %w", err))
+	if err := p.writeToFile(tmpl, transcriptHTML); err != nil {
+		return fmt.Errorf("fehler beim Schreiben der Datei: %w", err)
 	}
 
 	return nil
