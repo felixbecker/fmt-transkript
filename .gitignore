@@ -14,15 +14,15 @@
 
 # Build-Ausgabe
 /build/
+/bin/
+/fmtt
+/fmt-transkript
 
 # Verzeichnisse und Dateien für Abhängigkeiten
 vendor/
 
 # Module und Abhängigkeiten (falls mod-cache verwendet wird)
 pkg/
-
-# Go-Modul-Dateien
-go.sum
 
 # Test-Ausgaben
 *.test
