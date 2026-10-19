@@ -28,11 +28,18 @@ Run the program with the following command-line flags:
 go run main.go -file input.txt -host "Host Name" -guest "Guest Name" -output output.html
 ```
 
-### Required Flags:
-- `-file`: Path to the input transcript text file
-- `-host`: Name of the podcast host
-- `-guest`: Name of the guest
+### Flags:
+- `-file` (required): Path to the input transcript text file
+- `-host` (required): Name of the podcast host, spelled exactly as in the transcript
+- `-guest` (required): Name of the guest, spelled exactly as in the transcript
 - `-output`: Output HTML file name (defaults to "transcript.html")
+- `-raw-html`: Insert transcript text as-is. By default `<`, `>`, `&` and quotes are
+  escaped so that text like `x<y` or `<3` is not swallowed by the browser. Use this
+  flag only if you intentionally put HTML (links, `<b>`) into the transcript.
+
+The program exits with code 1 on errors. Warnings (text before the first speaker,
+lines that look like a speaker change but match neither `-host` nor `-guest`,
+clipboard problems) are printed to stderr; the HTML file is still written.
 
 ### Input Format
 
@@ -55,7 +62,21 @@ The generated HTML includes:
 - Color-coded speakers (blue for host, green for guest)
 - Timestamps in gray
 - Progressive loading with "Read More" functionality
-- Fade effect for long transcripts
+- Fade effect for long transcripts (the "Mehr lesen" link is only rendered for more than 10 elements)
+
+### Using the snippet in Hugo
+
+The clipboard contains only the transcript fragment, without the CSS and the
+`toggleVisibility()` script from `templates/base.html` — those must be provided by
+your Hugo theme. To paste raw HTML into a Markdown content file, Goldmark must allow it:
+
+```toml
+[markup.goldmark.renderer]
+  unsafe = true
+```
+
+The generated fragment contains no blank lines and no indentation, so Goldmark treats
+it as a single HTML block.
 
 ## Project Structure
 

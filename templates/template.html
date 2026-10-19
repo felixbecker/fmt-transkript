@@ -1,17 +1,15 @@
 {{ define "transcript" }}
-<div id="transcript" class="fade">
-    {{ range $idx, $elm := . }} 
-    {{ if lt $idx 10 }}
-        {{ $elm | safeHTML }}
-    {{ else if eq $idx 10 }}
+{{- $collapsible := gt (len .) 10 }}
+<div id="transcript"{{ if $collapsible }} class="fade"{{ end }}>
+    {{ range $idx, $elm := . }}
+    {{ if eq $idx 10 }}
         </div>
         <div id="more" class="slide">
-        {{ $elm | safeHTML }}
-    {{ else }}
+    {{ end }}
         {{ $elm | safeHTML }}
     {{ end }}
-    {{ end }} 
-</div> 
-<button onclick="toggleVisibility()" id="moreBtn">Mehr lesen</button>
-{{ end }} 
-
+</div>
+{{ if $collapsible }}
+<a href="#" onclick="toggleVisibility(); return false;" role="button" id="moreBtn">Mehr lesen</a>
+{{ end }}
+{{ end }}

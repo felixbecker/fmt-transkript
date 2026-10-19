@@ -37,6 +37,9 @@
             var transcript = document.getElementById("transcript");
             var moreText = document.getElementById("more");
             var btnText = document.getElementById("moreBtn");
+            if (!transcript || !moreText || !btnText) {
+                return; // kurzes Transkript ohne "Mehr lesen"-Bereich
+            }
 
             if (moreText.classList.contains("show")) {
             moreText.classList.remove("show");
@@ -51,7 +54,7 @@
     </script>
 </head>
 <body>
-   {{ . }}
+{{ . -}}
 </body>
 </html>
 {{ end }}
