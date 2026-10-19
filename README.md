@@ -13,11 +13,38 @@ A Go program that converts podcast transcripts from text files into formatted HT
 
 ## Installation
 
-1. Ensure you have Go installed on your system
-2. Clone this repository
-3. Install dependencies:
+Requires Go and a C compiler (cgo is needed for clipboard support; on macOS the
+Xcode Command Line Tools are sufficient).
+
+From GitHub:
 ```bash
-go mod tidy
+go install github.com/felixbecker/fmt-transkript/cmd/fmtt@latest
+```
+
+From a local clone (optimized build with version info):
+```bash
+make install      # builds and installs to $(go env GOBIN) or $(go env GOPATH)/bin
+```
+
+Other Makefile targets:
+
+| Target | Description |
+|---|---|
+| `make` / `make build` | optimized binary in `bin/fmtt` |
+| `make install` | optimized build, installed like `go install` |
+| `make uninstall` | removes the installed binary |
+| `make test` | runs the tests for both input formats |
+| `make vet` | `gofmt` check and `go vet` |
+| `make clean` | removes `bin/` |
+
+The tests in `cmd/fmtt/main_test.go` cover both input formats, flag validation,
+escaping and the "Mehr lesen" link. `cmd/fmtt/testdata/` contains invented transcripts
+with the exact structure of episode 17 (`standard`) and episode 18 (`timecode`)
+together with the expected output file (`*.golden.html`). After an intended change to
+the output, regenerate them and review the diff:
+
+```bash
+go test ./cmd/fmtt -run TestGolden -update
 ```
 
 ## Usage
@@ -25,17 +52,23 @@ go mod tidy
 Run the program with the following command-line flags:
 
 ```bash
-go run main.go -file input.txt -host "Host Name" -guest "Guest Name" -output output.html
+fmtt -file input.txt -host "Host Name" -guest "Guest Name" -output output.html
 ```
+
+Without installing: `go run ./cmd/fmtt -file input.txt …`
 
 ### Flags:
 - `-file` (required): Path to the input transcript text file
-- `-host` (required): Name of the podcast host, spelled exactly as in the transcript
-- `-guest` (required): Name of the guest, spelled exactly as in the transcript
+- `-host` (required): Name of the podcast host (with `-format standard` spelled exactly as in the transcript)
+- `-guest` (required): Name of the guest (with `-format standard` spelled exactly as in the transcript)
 - `-output`: Output HTML file name (defaults to "transcript.html")
+- `-format`: Input format, `standard` (default) or `timecode` — see below
+- `-host-label` / `-guest-label` (required with `-format timecode`): speaker labels
+  of host and guest in the transcript, e.g. `"Sprecher 2"`
 - `-raw-html`: Insert transcript text as-is. By default `<`, `>`, `&` and quotes are
   escaped so that text like `x<y` or `<3` is not swallowed by the browser. Use this
   flag only if you intentionally put HTML (links, `<b>`) into the transcript.
+- `-version`: Print the version and exit
 
 The program exits with code 1 on errors. Warnings (text before the first speaker,
 lines that look like a speaker change but match neither `-host` nor `-guest`,
@@ -43,7 +76,9 @@ clipboard problems) are printed to stderr; the HTML file is still written.
 
 ### Input Format
 
-The input text file should follow this format:
+Two input formats are supported, selected with `-format`.
+
+**`standard`** (default, episodes 1–17):
 ```
 Host Name (00:00)
 Host's message text
@@ -51,6 +86,32 @@ Host's message text
 Guest Name (00:15)
 Guest's message text
 ```
+
+**`timecode`** (episode 18 onwards): blocks of start/end timecode
+(hours:minutes:seconds:frames), a speaker label and the text:
+```
+00:00:57:09 - 00:01:09:16
+Sprecher 2
+Host's message text
+
+00:02:23:24 - 00:02:25:03
+Sprecher 1
+Guest's message text
+```
+
+The labels are generic, so you have to tell `fmtt` which label belongs to whom;
+`-host` and `-guest` are the names shown in the HTML:
+
+```bash
+fmtt -file ep-18-transcript.txt -format timecode \
+  -host Felix -host-label "Sprecher 2" \
+  -guest "Guest Name" -guest-label "Sprecher 1"
+```
+
+Consecutive blocks of the same speaker are merged into one entry (one paragraph per
+block). The timestamp is the start of the first block without frames, formatted like
+the standard format (`00:57`, `1:34:29`). Blocks with other labels (e.g. a jingle as
+"Sprecher 3") are appended to the previous speaker and reported as a warning.
 
 ## Output
 
@@ -67,7 +128,7 @@ The generated HTML includes:
 ### Using the snippet in Hugo
 
 The clipboard contains only the transcript fragment, without the CSS and the
-`toggleVisibility()` script from `templates/base.html` — those must be provided by
+`toggleVisibility()` script from `cmd/fmtt/templates/base.html` — those must be provided by
 your Hugo theme. To paste raw HTML into a Markdown content file, Goldmark must allow it:
 
 ```toml
@@ -82,9 +143,11 @@ it as a single HTML block.
 
 ```
 .
-├── main.go              # Main program logic
-└── templates/           # HTML templates
-    ├── base.html       # Base HTML structure and styling
-    ├── template.html   # Transcript template with "Read More" functionality
-    └── speaker_entry.html # Speaker entry formatting
+├── Makefile                    # build / install targets
+└── cmd/fmtt/
+    ├── main.go                 # Main program logic
+    └── templates/              # HTML templates (embedded into the binary)
+        ├── base.html           # Base HTML structure and styling
+        ├── template.html       # Transcript template with "Mehr lesen" functionality
+        └── speaker_entry.html  # Speaker entry formatting (currently unused)
 ```

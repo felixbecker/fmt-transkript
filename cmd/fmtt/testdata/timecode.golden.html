@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Transcript</title>
+    <style>
+        .host { color: blue; font-weight: bold; }
+        .guest { color: green; font-weight: bold; }
+        .timestamp { color: gray; font-style: italic; }
+        p { margin-top: 1em; }
+        .hidden { display: none; }
+        .slide {
+            transition: max-height 1s ease-out;
+            overflow: hidden;
+            max-height: 0;
+        }
+        .slide.show {
+            max-height: none;  
+        }
+        .fade {
+            position: relative;
+        }
+        .fade::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;  
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+        }
+    </style>
+    <script>
+        function toggleVisibility() {
+            var transcript = document.getElementById("transcript");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("moreBtn");
+            if (!transcript || !moreText || !btnText) {
+                return; 
+            }
+
+            if (moreText.classList.contains("show")) {
+            moreText.classList.remove("show");
+            btnText.innerHTML = "Mehr lesen";
+            transcript.classList.add("fade");
+            } else {
+            moreText.classList.add("show");
+            btnText.innerHTML = "Weniger lesen";
+            transcript.classList.remove("fade");
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="transcript" class="fade">
+<div><span class="guest">Max Mustermann</span><span class="timestamp">00:00</span></div>
+<p>Wir haben am Anfang jede Zeile von Hand geprüft. Irgendwann waren es so viele Dateien, dass das einfach nicht mehr ging. Also haben wir ein kleines Werkzeug geschrieben, das die Arbeit übernimmt. Seitdem passieren die Fehler nicht mehr beim Einfügen, sondern sie werden vorher sichtbar. Das klingt banal, aber genau das macht den Unterschied.</p>
+<p>Man darf nicht glauben, dass ein Format für immer gleich bleibt. Irgendwann kommt ein neues Programm, und plötzlich sehen die Dateien ganz anders aus. Dann braucht man Tests, die beide Varianten abdecken, sonst merkt man erst auf der Webseite, dass etwas schiefgelaufen ist. Und dann ist es meistens zu spät.</p>
+<p>Mein Rat wäre: lieber eine Warnung zu viel als eine zu wenig. Und Zeitstempel immer im gleichen Stil ausgeben, egal woher sie kommen.</p>
+<div><span class="host">Felix</span><span class="timestamp">00:57</span></div>
+<p>Das war ein guter Einstieg.</p>
+<p>Hallo und herzlich willkommen zu einer neuen Folge unseres Testpodcasts. Mein Name ist Felix, und diese Folge ist komplett erfunden, damit wir das Zeitcode-Format testen können. Jeder Block hat einen Start- und einen Endzeitpunkt mit Frames, darunter ein Sprecher-Label und dann den eigentlichen Text.</p>
+<p>Mehrere Blöcke hintereinander vom selben Sprecher sollen zu einem einzigen Beitrag zusammengefasst werden. Jeder Block wird dabei ein eigener Absatz. Der Zeitstempel kommt vom ersten Block, und die Frames fallen weg, damit es aussieht wie im Standardformat.</p>
+<p>Und natürlich habe ich auch einen Gast dabei. Max Mustermann ist ein ausgedachter Experte für ausgedachte Probleme. Er hat schon viele Formate kommen und gehen sehen, Sonderzeichen wie &lt;, &gt; und &amp; in Transkripten gefunden und weiß, dass Zeitstempel über eine Stunde gerne vergessen werden. Heute erzählt er uns davon.</p>
+<p>Also, Max Mustermann, herzlich willkommen im Testpodcast. Schön, dass du dir die Zeit genommen hast.</p>
+</div>
+<div id="more" class="slide">
+<div><span class="guest">Max Mustermann</span><span class="timestamp">02:23</span></div>
+<p>Hallo, schön hier zu sein.</p>
+<div><span class="host">Felix</span><span class="timestamp">02:25</span></div>
+<p>Sehr schön.</p>
+<div><span class="guest">Max Mustermann</span><span class="timestamp">1:34:28</span></div>
+<p>Vielen Dank.</p>
+<div><span class="host">Felix</span><span class="timestamp">1:34:29</span></div>
+<p>Und an alle anderen: Danke fürs Zuhören. Wenn euch die Folge gefallen hat, empfehlt sie gerne weiter. Bis zum nächsten Mal, und bleibt neugierig.</p>
+<p>Das war der Testpodcast!</p>
+</div>
+<a href="#" onclick="toggleVisibility(); return false;" role="button" id="moreBtn">Mehr lesen</a>
+</body>
+</html>

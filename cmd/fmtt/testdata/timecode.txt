@@ -1,0 +1,52 @@
+00:00:00:08 - 00:00:23:12
+Sprecher 1
+Wir haben am Anfang jede Zeile von Hand geprüft. Irgendwann waren es so viele Dateien, dass das einfach nicht mehr ging. Also haben wir ein kleines Werkzeug geschrieben, das die Arbeit übernimmt. Seitdem passieren die Fehler nicht mehr beim Einfügen, sondern sie werden vorher sichtbar. Das klingt banal, aber genau das macht den Unterschied.
+
+00:00:23:16 - 00:00:48:00
+Sprecher 1
+Man darf nicht glauben, dass ein Format für immer gleich bleibt. Irgendwann kommt ein neues Programm, und plötzlich sehen die Dateien ganz anders aus. Dann braucht man Tests, die beide Varianten abdecken, sonst merkt man erst auf der Webseite, dass etwas schiefgelaufen ist. Und dann ist es meistens zu spät.
+
+00:00:48:04 - 00:00:57:04
+Sprecher 1
+Mein Rat wäre: lieber eine Warnung zu viel als eine zu wenig. Und Zeitstempel immer im gleichen Stil ausgeben, egal woher sie kommen.
+
+00:00:57:09 - 00:01:09:16
+Sprecher 2
+Das war ein guter Einstieg.
+
+00:01:09:18 - 00:01:31:10
+Sprecher 2
+Hallo und herzlich willkommen zu einer neuen Folge unseres Testpodcasts. Mein Name ist Felix, und diese Folge ist komplett erfunden, damit wir das Zeitcode-Format testen können. Jeder Block hat einen Start- und einen Endzeitpunkt mit Frames, darunter ein Sprecher-Label und dann den eigentlichen Text.
+
+00:01:31:11 - 00:01:50:14
+Sprecher 2
+Mehrere Blöcke hintereinander vom selben Sprecher sollen zu einem einzigen Beitrag zusammengefasst werden. Jeder Block wird dabei ein eigener Absatz. Der Zeitstempel kommt vom ersten Block, und die Frames fallen weg, damit es aussieht wie im Standardformat.
+
+00:01:50:16 - 00:02:18:10
+Sprecher 2
+Und natürlich habe ich auch einen Gast dabei. Max Mustermann ist ein ausgedachter Experte für ausgedachte Probleme. Er hat schon viele Formate kommen und gehen sehen, Sonderzeichen wie <, > und & in Transkripten gefunden und weiß, dass Zeitstempel über eine Stunde gerne vergessen werden. Heute erzählt er uns davon.
+
+00:02:18:11 - 00:02:23:23
+Sprecher 2
+Also, Max Mustermann, herzlich willkommen im Testpodcast. Schön, dass du dir die Zeit genommen hast.
+
+00:02:23:24 - 00:02:25:03
+Sprecher 1
+Hallo, schön hier zu sein.
+
+00:02:25:05 - 00:02:25:22
+Sprecher 2
+Sehr schön.
+
+01:34:28:17 - 01:34:29:14
+Sprecher 1
+Vielen Dank.
+
+01:34:29:16 - 01:34:39:22
+Sprecher 2
+Und an alle anderen: Danke fürs Zuhören. Wenn euch die Folge gefallen hat, empfehlt sie gerne weiter. Bis zum nächsten Mal, und bleibt neugierig.
+
+01:34:40:01 - 01:34:41:24
+Sprecher 3
+Das war der Testpodcast!
+

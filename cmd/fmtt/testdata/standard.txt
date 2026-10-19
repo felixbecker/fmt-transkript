@@ -1,0 +1,41 @@
+Felix (01:12)
+Hallo und herzlich willkommen zu einer neuen Folge unseres Testpodcasts. Mein Name ist Felix, und heute sprechen wir über ein frei erfundenes Thema: wie man Transkripte für eine Webseite aufbereitet, ohne dabei den Überblick zu verlieren.
+
+Fast jedes Projekt beginnt mit einer einfachen Textdatei. Ein Werkzeug erzeugt sie, jemand korrigiert sie von Hand, und am Ende soll daraus eine lesbare Seite werden. Dazwischen passieren viele kleine Dinge, die man leicht übersieht: Sonderzeichen wie <, > und &, Zeitstempel über eine Stunde und Absätze, die über mehrere Zeilen gehen.
+
+Mein heutiger Gast ist Erika Beispiel. Sie ist eine ausgedachte Softwareentwicklerin, die schon unzählige ausgedachte Projekte begleitet hat. Sie kennt die typischen Stolperfallen und hat für fast jede eine Anekdote parat, die natürlich ebenfalls frei erfunden ist.
+
+Wir sprechen darüber, wie man Formate erkennt, wie man Fehler sichtbar macht statt sie zu verschlucken, und warum ein kleines Kommandozeilenwerkzeug manchmal mehr Zeit spart als jede große Plattform. Also, herzlich willkommen, Erika, schön, dass du da bist.
+
+Erika Beispiel (02:38)
+Danke für die Einladung, Felix. Ich freue mich sehr auf unser Gespräch heute.
+
+Felix (02:42)
+Sehr gerne. Lass uns direkt einsteigen. Du hast mir vorab erzählt, dass du gestern Abend noch an einem Problem gesessen hast. Worum ging es da genau, und wie lange hat es gedauert, bis du die Ursache gefunden hattest? Ich frage, weil das sicher vielen Zuhörern bekannt vorkommt.
+
+Erika Beispiel (02:57)
+Es war eine klassische Q&A-Situation: Jemand hat gefragt, warum auf der Webseite plötzlich Text fehlt. Es stellte sich heraus, dass im Transkript eine Formel wie x<y stand und der Browser den Rest als HTML-Tag interpretiert hat. So etwas sieht man beim Einfügen einfach nicht, und genau deshalb lohnt es sich, Sonderzeichen konsequent zu maskieren.
+
+Und am Ende war die Lösung eine einzige Zeile Code, wie so oft.
+
+Felix (03:28)
+Also auch mit viel Erfahrung steckst du noch tief im Code drin.
+
+Erika Beispiel (03:33)
+Das ist für mich die einzige Möglichkeit, bei den Werkzeugen auf dem aktuellen Stand zu bleiben. Wenn ich nur noch Folien mache, verliere ich das Gefühl dafür, wo es im Alltag tatsächlich hakt.
+
+Felix (03:48)
+Praxisnähe ist also das Motto. Das gefällt mir. Bevor wir zum Ende kommen, habe ich noch eine Frage, die ich allen meinen Gästen stelle.
+
+Erika Beispiel (1:32:48)
+Gerne, und ich hätte auch eine Frage für den nächsten Gast: Welches Werkzeug hat dir zuletzt am meisten Zeit gespart?
+
+Felix (1:32:59)
+Das ist eine schöne Frage, die nehme ich gerne mit. Ich verlinke außerdem alles, worüber wir gesprochen haben, in den Shownotes. Vielen Dank für das Gespräch, Erika, es hat großen Spaß gemacht, und ich bin sicher, dass unsere Zuhörer einiges mitnehmen konnten.
+
+Erika Beispiel (1:33:17)
+Danke dir für die Fragen und das schöne Gespräch. Hat mir viel Freude gemacht.
+
+Felix (1:33:21)
+Danke dir.
+

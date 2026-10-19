@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast Transcript</title>
+    <style>
+        .host { color: blue; font-weight: bold; }
+        .guest { color: green; font-weight: bold; }
+        .timestamp { color: gray; font-style: italic; }
+        p { margin-top: 1em; }
+        .hidden { display: none; }
+        .slide {
+            transition: max-height 1s ease-out;
+            overflow: hidden;
+            max-height: 0;
+        }
+        .slide.show {
+            max-height: none;  
+        }
+        .fade {
+            position: relative;
+        }
+        .fade::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;  
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+        }
+    </style>
+    <script>
+        function toggleVisibility() {
+            var transcript = document.getElementById("transcript");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("moreBtn");
+            if (!transcript || !moreText || !btnText) {
+                return; 
+            }
+
+            if (moreText.classList.contains("show")) {
+            moreText.classList.remove("show");
+            btnText.innerHTML = "Mehr lesen";
+            transcript.classList.add("fade");
+            } else {
+            moreText.classList.add("show");
+            btnText.innerHTML = "Weniger lesen";
+            transcript.classList.remove("fade");
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="transcript" class="fade">
+<div><span class="host">Felix</span><span class="timestamp">01:12</span></div>
+<p>Hallo und herzlich willkommen zu einer neuen Folge unseres Testpodcasts. Mein Name ist Felix, und heute sprechen wir über ein frei erfundenes Thema: wie man Transkripte für eine Webseite aufbereitet, ohne dabei den Überblick zu verlieren.</p>
+<p>Fast jedes Projekt beginnt mit einer einfachen Textdatei. Ein Werkzeug erzeugt sie, jemand korrigiert sie von Hand, und am Ende soll daraus eine lesbare Seite werden. Dazwischen passieren viele kleine Dinge, die man leicht übersieht: Sonderzeichen wie &lt;, &gt; und &amp;, Zeitstempel über eine Stunde und Absätze, die über mehrere Zeilen gehen.</p>
+<p>Mein heutiger Gast ist Erika Beispiel. Sie ist eine ausgedachte Softwareentwicklerin, die schon unzählige ausgedachte Projekte begleitet hat. Sie kennt die typischen Stolperfallen und hat für fast jede eine Anekdote parat, die natürlich ebenfalls frei erfunden ist.</p>
+<p>Wir sprechen darüber, wie man Formate erkennt, wie man Fehler sichtbar macht statt sie zu verschlucken, und warum ein kleines Kommandozeilenwerkzeug manchmal mehr Zeit spart als jede große Plattform. Also, herzlich willkommen, Erika, schön, dass du da bist.</p>
+<div><span class="guest">Erika Beispiel</span><span class="timestamp">02:38</span></div>
+<p>Danke für die Einladung, Felix. Ich freue mich sehr auf unser Gespräch heute.</p>
+<div><span class="host">Felix</span><span class="timestamp">02:42</span></div>
+<p>Sehr gerne. Lass uns direkt einsteigen. Du hast mir vorab erzählt, dass du gestern Abend noch an einem Problem gesessen hast. Worum ging es da genau, und wie lange hat es gedauert, bis du die Ursache gefunden hattest? Ich frage, weil das sicher vielen Zuhörern bekannt vorkommt.</p>
+<div><span class="guest">Erika Beispiel</span><span class="timestamp">02:57</span></div>
+</div>
+<div id="more" class="slide">
+<p>Es war eine klassische Q&amp;A-Situation: Jemand hat gefragt, warum auf der Webseite plötzlich Text fehlt. Es stellte sich heraus, dass im Transkript eine Formel wie x&lt;y stand und der Browser den Rest als HTML-Tag interpretiert hat. So etwas sieht man beim Einfügen einfach nicht, und genau deshalb lohnt es sich, Sonderzeichen konsequent zu maskieren.</p>
+<p>Und am Ende war die Lösung eine einzige Zeile Code, wie so oft.</p>
+<div><span class="host">Felix</span><span class="timestamp">03:28</span></div>
+<p>Also auch mit viel Erfahrung steckst du noch tief im Code drin.</p>
+<div><span class="guest">Erika Beispiel</span><span class="timestamp">03:33</span></div>
+<p>Das ist für mich die einzige Möglichkeit, bei den Werkzeugen auf dem aktuellen Stand zu bleiben. Wenn ich nur noch Folien mache, verliere ich das Gefühl dafür, wo es im Alltag tatsächlich hakt.</p>
+<div><span class="host">Felix</span><span class="timestamp">03:48</span></div>
+<p>Praxisnähe ist also das Motto. Das gefällt mir. Bevor wir zum Ende kommen, habe ich noch eine Frage, die ich allen meinen Gästen stelle.</p>
+<div><span class="guest">Erika Beispiel</span><span class="timestamp">1:32:48</span></div>
+<p>Gerne, und ich hätte auch eine Frage für den nächsten Gast: Welches Werkzeug hat dir zuletzt am meisten Zeit gespart?</p>
+<div><span class="host">Felix</span><span class="timestamp">1:32:59</span></div>
+<p>Das ist eine schöne Frage, die nehme ich gerne mit. Ich verlinke außerdem alles, worüber wir gesprochen haben, in den Shownotes. Vielen Dank für das Gespräch, Erika, es hat großen Spaß gemacht, und ich bin sicher, dass unsere Zuhörer einiges mitnehmen konnten.</p>
+<div><span class="guest">Erika Beispiel</span><span class="timestamp">1:33:17</span></div>
+<p>Danke dir für die Fragen und das schöne Gespräch. Hat mir viel Freude gemacht.</p>
+<div><span class="host">Felix</span><span class="timestamp">1:33:21</span></div>
+<p>Danke dir.</p>
+</div>
+<a href="#" onclick="toggleVisibility(); return false;" role="button" id="moreBtn">Mehr lesen</a>
+</body>
+</html>
